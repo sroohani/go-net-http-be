@@ -37,6 +37,8 @@ func main() {
 
 	a := &App{}
 	a.Initialize()
+	session.GenerateSecret()
+	session.SetBcryptCost(a.BcryptCost())
 
 	router := http.NewServeMux()
 	router.Handle("GET /{$}", HttpHandler{})

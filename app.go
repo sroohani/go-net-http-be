@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 )
@@ -8,6 +9,7 @@ import (
 type App struct {
 	serverHost string
 	serverPort int
+	bcryptCost int
 }
 
 func (a *App) Initialize() {
@@ -24,6 +26,17 @@ func (a *App) Initialize() {
 		serverPort = 9876
 	}
 	a.serverPort = serverPort
+
+	bcryptCostStr := os.Getenv("BCRYPT_COST")
+	if bcryptCostStr == "" {
+		bcryptCostStr = "10"
+	}
+	bcryptCost, err := strconv.Atoi(bcryptCostStr)
+	if err != nil {
+		fmt.Println(err)
+		bcryptCost = 10
+	}
+	a.bcryptCost = bcryptCost
 }
 
 func (a *App) ServerHost() string {
@@ -32,4 +45,8 @@ func (a *App) ServerHost() string {
 
 func (a *App) ServerPort() int {
 	return a.serverPort
+}
+
+func (a *App) BcryptCost() int {
+	return a.bcryptCost
 }
